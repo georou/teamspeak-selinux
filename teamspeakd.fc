@@ -1,0 +1,18 @@
+/etc/systemd/system/teamspeakd.*	--      gen_context(system_u:object_r:teamspeakd_unit_t,s0)
+/usr/lib/systemd/system/teamspeakd.*	--     	gen_context(system_u:object_r:teamspeakd_unit_t,s0)
+
+/opt/teamspeak/ts3server		--	gen_context(system_u:object_r:teamspeakd_exec_t,s0)
+/opt/teamspeak/tsdns/tsdnsserver	--	gen_context(system_u:object_r:teamspeakd_exec_t,s0)
+
+/opt/teamspeak/ts3server\.sqlitedb	--	gen_context(system_u:object_r:teamspeakd_db_t, s0)
+
+/opt/teamspeak(/.*)?				gen_context(system_u:object_r:teamspeakd_data_ro_t, s0)
+/opt/teamspeak/files(/.*)?			gen_context(system_u:object_r:teamspeakd_data_rw_t, s0)
+/opt/teamspeak/query_ip_blacklist\.txt	--	gen_context(system_u:object_r:teamspeakd_data_rw_t, s0)
+/opt/teamspeak/query_ip_whitelist\.txt	--	gen_context(system_u:object_r:teamspeakd_data_rw_t, s0)
+
+/opt/teamspeak/libts3db_mariadb.so	--	gen_context(system_u:object_r:teamspeakd_lib_t, s0)
+/opt/teamspeak/libts3db_sqlite3.so	--	gen_context(system_u:object_r:teamspeakd_lib_t, s0)
+
+/var/log/teamspeak(/.*)?			gen_context(system_u:object_r:teamspeakd_log_t, s0)
+/opt/teamspeak/logs(/.*)?			gen_context(system_u:object_r:teamspeakd_log_t, s0)

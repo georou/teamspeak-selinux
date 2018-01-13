@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<service>
+        <short>Teamspeak</short>
+        <description>Teamspeak Server</description>
+        <port protocol="udp" port="9987" />
+	<!--<port protocol="tcp" port="10011" />-->
+	<!--<port protocol="tcp" port="30033" />-->
+	<!--<port protocol="udp" port="2011-2110" />-->
+</service>

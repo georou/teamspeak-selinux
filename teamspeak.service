@@ -1,0 +1,18 @@
+[Unit]
+Description=TeamSpeak Daemon Server Service
+After=network.target
+
+[Service]
+Type=forking
+WorkingDirectory=/opt/teamspeak/
+ExecStart=/opt/teamspeak/ts3server_startscript.sh start inifile=ts3server.ini
+ExecStop=/opt/teamspeak/ts3server_startscript.sh stop
+User=teamspeak
+Group=teamspeak
+PIDFile=/opt/teamspeak/ts3server.pid
+Restart=always
+RestartSec=5
+SyslogIdentifier=teamspeak
+
+[Install]
+WantedBy=multi-user.target

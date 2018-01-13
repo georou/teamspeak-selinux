@@ -1,0 +1,40 @@
+
+## <summary>policy for teamspeakd</summary>
+
+########################################
+## <summary>
+##	Execute teamspeakd_exec_t in the teamspeakd domain.
+## </summary>
+## <param name="domain">
+## <summary>
+##	Domain allowed to transition.
+## </summary>
+## </param>
+#
+interface(`teamspeakd_domtrans',`
+	gen_require(`
+		type teamspeakd_t, teamspeakd_exec_t;
+	')
+
+	corecmd_search_bin($1)
+	domtrans_pattern($1, teamspeakd_exec_t, teamspeakd_t)
+')
+
+######################################
+## <summary>
+##	Execute teamspeakd in the caller domain.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`teamspeakd_exec',`
+	gen_require(`
+		type teamspeakd_exec_t;
+	')
+
+	corecmd_search_bin($1)
+	can_exec($1, teamspeakd_exec_t)
+')

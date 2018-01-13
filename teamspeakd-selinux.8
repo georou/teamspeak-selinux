@@ -1,0 +1,244 @@
+.TH  "teamspeakd_selinux"  "8"  "18-01-13" "teamspeakd" "SELinux Policy teamspeakd"
+.SH "NAME"
+teamspeakd_selinux \- Security Enhanced Linux Policy for the teamspeakd processes
+.SH "DESCRIPTION"
+
+Security-Enhanced Linux secures the teamspeakd processes via flexible mandatory access control.
+
+The teamspeakd processes execute with the teamspeakd_t SELinux type. You can check if you have these processes running by executing the \fBps\fP command with the \fB\-Z\fP qualifier.
+
+For example:
+
+.B ps -eZ | grep teamspeakd_t
+
+
+.SH "ENTRYPOINTS"
+
+The teamspeakd_t SELinux type can be entered via the \fBteamspeakd_exec_t\fP file type.
+
+The default entrypoint paths for the teamspeakd_t domain are the following:
+
+/opt/teamspeak/ts3server, /opt/teamspeak/tsdns/tsdnsserver
+.SH PROCESS TYPES
+SELinux defines process types (domains) for each process running on the system
+.PP
+You can see the context of a process using the \fB\-Z\fP option to \fBps\bP
+.PP
+Policy governs the access confined processes have to files.
+SELinux teamspeakd policy is very flexible allowing users to setup their teamspeakd processes in as secure a method as possible.
+.PP
+The following process types are defined for teamspeakd:
+
+.EX
+.B teamspeakd_t
+.EE
+.PP
+Note:
+.B semanage permissive -a teamspeakd_t
+can be used to make the process type teamspeakd_t permissive. SELinux does not deny access to permissive process types, but the AVC (SELinux denials) messages are still generated.
+
+.SH PORT TYPES
+SELinux defines port types to represent TCP and UDP ports.
+.PP
+You can see the types associated with a port by using the following command:
+
+.B semanage port -l
+
+.PP
+Policy governs the access confined processes have to these ports.
+SELinux teamspeakd policy is very flexible allowing users to setup their teamspeakd processes in as secure a method as possible.
+.PP
+The following port types are defined for teamspeakd:
+
+.EX
+.TP 5
+.B teamspeakd_port_t
+.TP 10
+.EE
+
+
+.SH "MANAGED FILES"
+
+The SELinux process type teamspeakd_t can manage files labeled with the following file types.  The paths listed are the default paths for these file types.  Note the processes UID still need to have DAC permissions.
+
+.br
+.B teamspeakd_data_rw_t
+
+	/opt/teamspeak/files(/.*)?
+.br
+	/opt/teamspeak/query_ip_blacklist\.txt
+.br
+	/opt/teamspeak/query_ip_whitelist\.txt
+.br
+
+.br
+.B teamspeakd_db_t
+
+	/opt/teamspeak/ts3server\.sqlitedb
+.br
+
+.br
+.B teamspeakd_log_t
+
+	/var/log/teamspeak(/.*)?
+.br
+	/opt/teamspeak/logs(/.*)?
+.br
+
+.br
+.B teamspeakd_tmp_t
+
+
+.br
+.B teamspeakd_tmpfs_t
+
+
+.SH FILE CONTEXTS
+SELinux requires files to have an extended attribute to define the file type.
+.PP
+You can see the context of a file using the \fB\-Z\fP option to \fBls\bP
+.PP
+Policy governs the access confined processes have to these files.
+SELinux teamspeakd policy is very flexible allowing users to setup their teamspeakd processes in as secure a method as possible.
+.PP
+
+.PP
+.B STANDARD FILE CONTEXT
+
+SELinux defines the file context types for the teamspeakd, if you wanted to
+store files with these types in a diffent paths, you need to execute the semanage command to sepecify alternate labeling and then use restorecon to put the labels on disk.
+
+.B semanage fcontext -a -t teamspeakd_lib_t '/srv/myteamspeakd_content(/.*)?'
+.br
+.B restorecon -R -v /srv/myteamspeakd_content
+
+Note: SELinux often uses regular expressions to specify labels that match multiple files.
+
+.I The following file types are defined for teamspeakd:
+
+
+.EX
+.PP
+.B teamspeakd_data_ro_t
+.EE
+
+- Set files with the teamspeakd_data_ro_t type, if you want to treat the files as teamspeakd data read/only content.
+
+
+.EX
+.PP
+.B teamspeakd_data_rw_t
+.EE
+
+- Set files with the teamspeakd_data_rw_t type, if you want to treat the files as teamspeakd data read/write content.
+
+.br
+.TP 5
+Paths:
+/opt/teamspeak/files(/.*)?, /opt/teamspeak/query_ip_blacklist\.txt, /opt/teamspeak/query_ip_whitelist\.txt
+
+.EX
+.PP
+.B teamspeakd_db_t
+.EE
+
+- Set files with the teamspeakd_db_t type, if you want to treat the files as teamspeakd database content.
+
+
+.EX
+.PP
+.B teamspeakd_exec_t
+.EE
+
+- Set files with the teamspeakd_exec_t type, if you want to transition an executable to the teamspeakd_t domain.
+
+.br
+.TP 5
+Paths:
+/opt/teamspeak/ts3server, /opt/teamspeak/tsdns/tsdnsserver
+
+.EX
+.PP
+.B teamspeakd_log_t
+.EE
+
+- Set files with the teamspeakd_log_t type, if you want to treat the data as teamspeakd log data, usually stored under the /var/log directory.
+
+.br
+.TP 5
+Paths:
+/var/log/teamspeak(/.*)?, /opt/teamspeak/logs(/.*)?
+
+.EX
+.PP
+.B teamspeakd_tmp_t
+.EE
+
+- Set files with the teamspeakd_tmp_t type, if you want to store teamspeakd temporary files in the /tmp directories.
+
+
+.EX
+.PP
+.B teamspeakd_tmpfs_t
+.EE
+
+- Set files with the teamspeakd_tmpfs_t type, if you want to store teamspeakd files on a tmpfs file system.
+
+
+.EX
+.PP
+.B teamspeakd_unit_t
+.EE
+
+- Set files with the teamspeakd_unit_t type, if you want to treat the files as teamspeakd unit data.
+
+.br
+.TP 5
+Paths:
+/etc/systemd/system/teamspeakd.*, /usr/lib/systemd/system/teamspeakd.*
+
+.EX
+.PP
+.B teamspeakd_var_lib_t
+.EE
+
+- Set files with the teamspeakd_lib_t type, if you want to store the teamspeakd files under the /var/lib directory.
+
+.br
+.TP 5
+Paths:
+/opt/teamspeak/libts3db_mariadb.so, /opt/teamspeak/libts3db_sqlite3.so
+
+.PP
+Note: File context can be temporarily modified with the chcon command.  If you want to permanently change the file context you need to use the
+.B semanage fcontext
+command.  This will modify the SELinux labeling database.  You will need to use
+.B restorecon
+to apply the labels.
+
+.SH "COMMANDS"
+.B semanage fcontext
+can also be used to manipulate default file context mappings.
+.PP
+.B semanage permissive
+can also be used to manipulate whether or not a process type is permissive.
+.PP
+.B semanage module
+can also be used to enable/disable/install/remove policy modules.
+
+.B semanage port
+can also be used to manipulate the port definitions
+
+.B semanage boolean
+can also be used to manipulate the booleans
+
+.PP
+.B system-config-selinux
+is a GUI tool available to customize SELinux policy settings.
+
+.SH AUTHOR
+https://github.com/georou/teamspeak-selinux
+
+.SH "SEE ALSO"
+selinux(8), teamspeakd(8), semanage(8), restorecon(8), chcon(1), sepolicy(8)
+, setsebool(8)
