@@ -91,3 +91,12 @@ ausearch -m avc,user_avc,selinux_err -ts recent | audit2allow -R
 ```
 If you get a could not open interface info [/var/lib/sepolgen/interface_info] error. 
 Ensure policycoreutils-devel is installed and/or run: `sepolgen-ifgen`
+
+
+## Compatibility Notes
+Built on CentOS 7.4 at the time with:
+```
+selinux-policy-targeted-3.13.1-166.el7_4.7.noarch
+selinux-policy-3.13.1-166.el7_4.7.noarch
+selinux-policy-devel-3.13.1-166.el7_4.7.noarch
+```
