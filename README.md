@@ -18,10 +18,9 @@ There is also a man page (teamspeakd-selinux.8) included if desired. `gzip teams
 https://www.teamspeak.com/en/downloads.html#server
 
 # Add the teamspeak user and directories
-useradd -d /opt/teamspeak -s /sbin/nologin teamspeak && chmod 770 /opt/teamspeak
-install -m 770 -o teamspeak -g teamspeak -d /var/log/teamspeak
+useradd -Mrs /sbin/nologin -c "Teamspeak VOIP daemon" teamspeak && install -d -m 0750 -o teamspeakd -g teamspeakd /opt/teamspeak
 
-# Copy files to required locations
+# Copy github files to required locations
 cp -a /dir/to/teamspeaksource/* /opt/teamspeak
 cp teamspeak.service /etc/systemd/system
 cp ts3server.ini /opt/teamspeak
@@ -33,7 +32,7 @@ systemctl daemon-reload
 
 # Edit the ts3server.ini file to reflect the settings you want, before starting the daemon
 
-# For future refernce, TS DNS SRV record how-to:
+# For future refernce, add TS DNS SRV and A record to your DNS how-to:
 _ts3._udp.example.com. IN SRV 0 10 9987 ts1.example.com.
 ts1.example.com. IN A ip.add.ress.1
 
@@ -43,6 +42,9 @@ ts1.example.com. IN A ip.add.ress.1
 ```sh
 # Clone the repo
 git clone https://github.com/georou/teamspeak-selinux.git
+
+# Optional - Copy relevant .if interface file to /usr/share/selinux/devel/include to expose them when building and for future modules
+install -Dp -m 0664 -o root -g root teamspeakd.if /usr/share/selinux/devel/include/myapplications/teamspeakd.if
 
 # Compile the selinux module (see below)
 
